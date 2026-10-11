@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memorama del Software Libre</title>
+  <meta name="description" content="Juego de memoria: empareja cada programa privativo con su alternativa libre. Feria de Logros, 5.º grado.">
+  <meta name="theme-color" content="#2a1466">
+  <link rel="icon" type="image/svg+xml" href="assets/tux/tux.svg">
+  <link rel="stylesheet" href="css/styles.css">
+  <script defer src="js/data.js"></script>
+  <script defer src="js/game.js"></script>
+  <script defer src="js/records.js"></script>
+  <script defer src="js/audio.js"></script>
+  <script defer src="js/ui.js"></script>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+    <span class="blob b4"></span><span class="blob b5"></span>
+  </div>
+
+  <div class="corner">
+    <button class="round-btn" id="btn-sonido" type="button" aria-pressed="false" aria-label="Silenciar sonido">🔊</button>
+    <button class="round-btn" id="btn-pantalla" type="button" aria-label="Pantalla completa">⛶</button>
+  </div>
+
+  <main id="app">
+
+    <!-- INICIO -->
+    <section class="screen is-active" id="inicio" aria-labelledby="inicio-titulo">
+      <div class="home">
+        <header class="hero">
+          <p class="kicker">Feria de Logros · 5.º grado</p>
+          <h1 id="inicio-titulo" tabindex="-1"><span class="h1-top">Memorama</span> <span class="h1-bottom">del Software Libre</span></h1>
+          <p class="hero-sub">Encuentra la pareja: el programa <b class="t-priv">🔒 privativo</b> y su alternativa <b class="t-libre">🔓 libre</b>, o juega al memorama clásico.</p>
+        </header>
+
+        <div class="home-tux">
+          <div class="bubble" id="home-bubble" aria-live="polite">¡Hola! Soy Tux, el pingüino de Linux. ¿Jugamos?</div>
+          <button class="tux-btn" id="home-tux" type="button" aria-label="Tux, la mascota. Tócalo para que te cuente algo">
+            <img class="tux" src="assets/tux/tux.svg" alt="" width="200" height="236" draggable="false">
+          </button>
+        </div>
+
+        <nav class="menu" aria-label="Menú principal">
+          <button class="btn btn-green big" type="button" data-mode="solo"><span class="btn-ico">🎮</span><span>Jugar solo</span></button>
+          <button class="btn btn-orange big" type="button" data-mode="duelo"><span class="btn-ico">⚔️</span><span>Duelo</span></button>
+          <button class="btn btn-yellow" type="button" data-go="records"><span class="btn-ico">🏆</span><span>Récords</span></button>
+          <button class="btn btn-sky" type="button" data-go="aprende"><span class="btn-ico">💡</span><span>Aprende</span></button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- CONFIGURACIÓN -->
+    <section class="screen" id="config" aria-labelledby="config-titulo">
+      <div class="panel">
+        <button class="btn-back" type="button" data-go="inicio">← Inicio</button>
+        <h2 id="config-titulo" tabindex="-1">Jugar solo</h2>
+        <p class="panel-sub" id="config-sub">Elige un nivel y encuentra todas las parejas.</p>
+
+        <form id="config-form" autocomplete="off">
+          <fieldset class="levels types">
+            <legend>Tipo de memorama</legend>
+            <label class="level">
+              <input type="radio" name="tipo" value="libre" checked>
+              <span class="level-card"><span class="level-ico">🔁</span><b>Libre vs. privativo</b><small>Word ➜ Writer</small></span>
+            </label>
+            <label class="level">
+              <input type="radio" name="tipo" value="clasico">
+              <span class="level-card"><span class="level-ico">🃏</span><b>Clásico</b><small>Word ➜ Word</small></span>
+            </label>
+          </fieldset>
+
+          <fieldset class="levels">
+            <legend>Nivel</legend>
+            <label class="level">
+              <input type="radio" name="nivel" value="facil" checked>
+              <span class="level-card"><span class="level-ico">🐣</span><b>Fácil</b><small>6 parejas</small></span>
+            </label>
+            <label class="level">
+              <input type="radio" name="nivel" value="normal">
+              <span class="level-card"><span class="level-ico">🐧</span><b>Normal</b><small>8 parejas</small></span>
+            </label>
+            <label class="level">
+              <input type="radio" name="nivel" value="dificil">
+              <span class="level-card"><span class="level-ico">🚀</span><b>Difícil</b><small>10 parejas</small></span>
+            </label>
+          </fieldset>
+
+          <button class="btn btn-green big wide" type="submit"><span class="btn-ico">▶</span><span>¡A jugar!</span></button>
+        </form>
+      </div>
+    </section>
+
+    <!-- JUEGO -->
+    <section class="screen" id="juego" aria-labelledby="juego-titulo">
+      <h2 class="sr-only" id="juego-titulo" tabindex="-1">Tablero de juego</h2>
+      <header class="hud">
+        <button class="btn-chip" id="btn-salir" type="button">← Salir</button>
+
+        <div class="hud-solo" id="hud-solo">
+          <div class="stat"><span class="stat-label">Puntos</span><span class="stat-value" id="hud-puntos">0</span></div>
+          <div class="stat"><span class="stat-label">Parejas</span><span class="stat-value" id="hud-parejas">0/6</span></div>
+          <div class="stat"><span class="stat-label">Intentos</span><span class="stat-value" id="hud-intentos">0</span></div>
+          <div class="stat"><span class="stat-label">Tiempo</span><span class="stat-value" id="hud-tiempo">0:00</span></div>
+        </div>
+
+        <div class="hud-duelo" id="hud-duelo" hidden>
+          <div class="player p1" id="hud-p1">
+            <span class="player-name"></span>
+            <span class="player-score">0</span>
+            <span class="player-turn">¡Tu turno!</span>
+          </div>
+          <span class="vs" aria-hidden="true">VS</span>
+          <div class="player p2" id="hud-p2">
+            <span class="player-name"></span>
+            <span class="player-score">0</span>
+            <span class="player-turn">¡Tu turno!</span>
+          </div>
+        </div>
+
+        <button class="btn-chip" id="btn-reiniciar" type="button">↻ Reiniciar</button>
+      </header>
+
+      <div class="play">
+        <div class="board-wrap" id="board-wrap">
+          <div class="board" id="board" role="group" aria-label="Cartas"></div>
+        </div>
+        <aside class="guide" aria-label="Tux, tu guía">
+          <div class="bubble" id="guide-bubble" aria-live="polite"></div>
+          <img class="tux" id="guide-tux" src="assets/tux/tux.svg" alt="" width="200" height="236" draggable="false">
+        </aside>
+      </div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="screen" id="resultado" aria-labelledby="resultado-titulo">
+      <div class="panel result">
+        <img class="tux result-tux" src="assets/tux/tux.svg" alt="" width="200" height="236" draggable="false">
+        <div class="stars" id="resultado-estrellas" aria-hidden="true"></div>
+        <h2 id="resultado-titulo" tabindex="-1">¡Lo lograste!</h2>
+        <p class="panel-sub" id="resultado-sub"></p>
+
+        <div class="result-score" id="resultado-puntos"></div>
+        <div class="result-stats" id="resultado-datos"></div>
+
+        <p class="record-done" id="record-listo" hidden></p>
+
+        <div class="result-actions">
+          <button class="btn btn-green big" id="btn-otra" type="button"><span class="btn-ico">↻</span><span>Jugar otra vez</span></button>
+          <button class="btn btn-yellow" type="button" data-go="records"><span class="btn-ico">🏆</span><span>Récords</span></button>
+          <button class="btn btn-sky" type="button" data-go="inicio"><span class="btn-ico">🏠</span><span>Inicio</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RÉCORDS -->
+    <section class="screen" id="records" aria-labelledby="records-titulo">
+      <div class="panel">
+        <button class="btn-back" type="button" data-go="inicio">← Inicio</button>
+        <h2 id="records-titulo" tabindex="-1">🏆 Récords</h2>
+        <p class="panel-sub">Los mejores puntajes del modo «Jugar solo».</p>
+
+        <div class="tabs" id="records-tipo" role="tablist" aria-label="Tipo de memorama">
+          <button class="tab" type="button" role="tab" id="tab-t-libre" data-type="libre" aria-controls="records-panel" aria-selected="true">🔁 Libre vs. privativo</button>
+          <button class="tab" type="button" role="tab" id="tab-t-clasico" data-type="clasico" aria-controls="records-panel" aria-selected="false" tabindex="-1">🃏 Clásico</button>
+        </div>
+        <div class="tabs" id="records-tabs" role="tablist" aria-label="Nivel">
+          <button class="tab" type="button" role="tab" id="tab-r-facil" data-level="facil" aria-controls="records-panel" aria-selected="true">🐣 Fácil</button>
+          <button class="tab" type="button" role="tab" id="tab-r-normal" data-level="normal" aria-controls="records-panel" aria-selected="false" tabindex="-1">🐧 Normal</button>
+          <button class="tab" type="button" role="tab" id="tab-r-dificil" data-level="dificil" aria-controls="records-panel" aria-selected="false" tabindex="-1">🚀 Difícil</button>
+        </div>
+        <div class="tab-panel" id="records-panel" role="tabpanel" aria-labelledby="tab-r-facil" tabindex="0"></div>
+
+        <button class="btn-link" id="btn-borrar" type="button">Borrar récords</button>
+      </div>
+    </section>
+
+    <!-- APRENDE -->
+    <section class="screen" id="aprende" aria-labelledby="aprende-titulo">
+      <div class="panel">
+        <button class="btn-back" type="button" data-go="inicio">← Inicio</button>
+        <h2 id="aprende-titulo" tabindex="-1">💡 Aprende con Tux</h2>
+
+        <div class="tabs" id="aprende-tabs" role="tablist" aria-label="Temas">
+          <button class="tab" type="button" role="tab" id="tab-a-1" aria-controls="panel-a-1" aria-selected="true">🗽 4 libertades</button>
+          <button class="tab" type="button" role="tab" id="tab-a-2" aria-controls="panel-a-2" aria-selected="false" tabindex="-1">🔁 Libre vs. privativo</button>
+          <button class="tab" type="button" role="tab" id="tab-a-3" aria-controls="panel-a-3" aria-selected="false" tabindex="-1">🐧 Tux</button>
+          <button class="tab" type="button" role="tab" id="tab-a-4" aria-controls="panel-a-4" aria-selected="false" tabindex="-1">🌎 Escuela y planeta</button>
+        </div>
+
+        <div class="tab-panel" id="panel-a-1" role="tabpanel" aria-labelledby="tab-a-1" tabindex="0">
+          <p class="lead">Un programa libre es como una <b>receta de cocina</b>: cualquiera puede usarla, leerla, compartirla y mejorarla.</p>
+          <ol class="freedoms" id="libertades"></ol>
+        </div>
+
+        <div class="tab-panel" id="panel-a-2" role="tabpanel" aria-labelledby="tab-a-2" tabindex="0" hidden>
+          <p class="lead">El software <b class="t-priv">privativo</b> casi siempre se paga y no deja ver cómo funciona. El software <b class="t-libre">libre</b> hace lo mismo y es de todos.</p>
+          <ul class="compare" id="comparativa"></ul>
+        </div>
+
+        <div class="tab-panel" id="panel-a-3" role="tabpanel" aria-labelledby="tab-a-3" tabindex="0" hidden>
+          <div class="story">
+            <img class="tux story-tux" src="assets/tux/tux.svg" alt="Tux, el pingüino de Linux" width="200" height="236" draggable="false">
+            <ul class="facts">
+              <li><b>Linus Torvalds</b>, un estudiante de Finlandia, creó Linux en 1991 y lo compartió con todo el mundo.</li>
+              <li>A Linus le encantan los pingüinos. ¡Cuenta que uno pequeño lo mordió en un zoológico de Australia!</li>
+              <li><b>Tux</b> fue dibujado por Larry Ewing en 1996 usando GIMP, un programa libre.</li>
+              <li>Hoy Linux está en celulares, supercomputadoras y hasta en robots que exploran Marte.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-a-4" role="tabpanel" aria-labelledby="tab-a-4" tabindex="0" hidden>
+          <div class="why">
+            <article class="why-card">
+              <span class="why-ico">💰</span>
+              <h3>Ahorro</h3>
+              <p>Las escuelas no tienen que pagar licencias costosas por cada computadora.</p>
+            </article>
+            <article class="why-card">
+              <span class="why-ico">♻️</span>
+              <h3>Ecología</h3>
+              <p>Linux necesita menos potencia y puede «revivir» computadoras viejas que irían a la basura.</p>
+            </article>
+            <article class="why-card">
+              <span class="why-ico">🤝</span>
+              <h3>Comunidad</h3>
+              <p>Personas de todo el mundo lo mejoran juntas y comparten lo que aprenden.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <dialog class="dialog" id="dialogo" aria-labelledby="dialogo-texto">
+    <p id="dialogo-texto"></p>
+    <div class="dialog-actions">
+      <button class="btn btn-sky" id="dialogo-no" type="button">Cancelar</button>
+      <button class="btn btn-orange" id="dialogo-si" type="button">Sí</button>
+    </div>
+  </dialog>
+
+  <noscript><p class="noscript">Este juego necesita JavaScript para funcionar.</p></noscript>
+</body>
+</html>
