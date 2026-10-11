@@ -76,6 +76,8 @@
 
   function leaveGame() {
     clearTimers();
+    var fx = $('.match-fx', boardWrap);
+    if (fx) fx.remove();
     stopClock();
     stopConfetti();
     state.game = null;
@@ -310,6 +312,29 @@
     }
   }
 
+  // Los dos logos se juntan en el centro del tablero con una palomita. No bloquea los clics.
+  function matchEffect(imgs, text) {
+    if (reduced) return;
+    var old = $('.match-fx', boardWrap);
+    if (old) old.remove();
+    var fx = el('div', 'match-fx');
+    fx.setAttribute('aria-hidden', 'true');
+    var row = el('div', 'match-fx-row');
+    imgs.forEach(function (src, i) {
+      var logo = el('span', 'match-fx-logo ' + (i ? 'right' : 'left'));
+      var img = el('img');
+      img.src = src;
+      img.alt = '';
+      logo.appendChild(img);
+      row.appendChild(logo);
+      if (!i) row.appendChild(el('span', 'match-fx-check', '✓'));
+    });
+    fx.appendChild(row);
+    fx.appendChild(el('span', 'match-fx-text', text));
+    fx.addEventListener('animationend', function (e) { if (e.target === fx) fx.remove(); });
+    boardWrap.appendChild(fx);
+  }
+
   function floatPoints(card, text) {
     if (reduced) return;
     card.appendChild(el('span', 'float-pts', text));
@@ -348,6 +373,9 @@
         floatPoints(cards[1], game.mode === 'duelo' ? '+1' : '+' + result.points);
         Sound.match(result.streak);
         var prefix = result.streak > 1 ? '¡Racha x' + result.streak + '! ' : '¡Pareja! ';
+        matchEffect(game.type === 'clasico'
+          ? [result.pair[result.side].img, result.pair[result.side].img]
+          : [result.pair.priv.img, result.pair.libre.img], prefix.trim());
         guide(game.type === 'clasico'
           ? classicMessage(result.pair, result.side, prefix)
           : matchMessage(result.pair, prefix), 'happy');

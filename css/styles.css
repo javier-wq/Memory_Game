@@ -342,6 +342,7 @@ legend { padding: 0; margin-bottom: 10px; font-size: 1.2rem; font-weight: 600; }
   overflow: auto; border-radius: 28px; background: rgba(255, 255, 255, .08);
   box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .12);
   transition: box-shadow .3s ease;
+  position: relative;
 }
 #juego[data-turn="0"] .board-wrap { box-shadow: inset 0 0 0 5px var(--p1); }
 #juego[data-turn="1"] .board-wrap { box-shadow: inset 0 0 0 5px var(--p2); }
@@ -466,6 +467,48 @@ legend { padding: 0; margin-bottom: 10px; font-size: 1.2rem; font-weight: 600; }
   from { opacity: 0; transform: translate(-50%, 20%) scale(.5); }
   25% { opacity: 1; transform: translate(-50%, -30%) scale(1.15); }
   to { opacity: 0; transform: translate(-50%, -160%) scale(1); }
+}
+
+/* Animación de pareja encontrada, en el centro del tablero */
+.match-fx {
+  position: absolute; left: 50%; top: 50%; z-index: 5; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 18px 26px 14px; border-radius: 32px;
+  background: rgba(255, 253, 245, .96); box-shadow: 0 12px 40px rgba(20, 0, 60, .45), 0 0 0 5px var(--yellow);
+  animation: fx-box 1.35s ease forwards;
+}
+.match-fx-row { display: flex; align-items: center; gap: 10px; }
+.match-fx-logo { display: grid; place-items: center; width: clamp(64px, 11vmin, 104px); height: clamp(64px, 11vmin, 104px); }
+.match-fx-logo img { width: 100%; height: 100%; object-fit: contain; }
+.match-fx-logo.left { animation: fx-left .6s cubic-bezier(.3, 1.4, .5, 1) both; }
+.match-fx-logo.right { animation: fx-right .6s cubic-bezier(.3, 1.4, .5, 1) both; }
+.match-fx-check {
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  font-size: 2rem; font-weight: 700; color: #fff; background: var(--libre);
+  box-shadow: 0 4px 0 var(--green-d);
+  animation: fx-check .5s .4s cubic-bezier(.3, 1.8, .5, 1) both;
+}
+.match-fx-text {
+  font-size: clamp(1.4rem, 4vmin, 2rem); font-weight: 700; color: var(--libre);
+  animation: fx-check .45s .5s cubic-bezier(.3, 1.6, .5, 1) both;
+}
+@keyframes fx-box {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.6); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+  25%, 78% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -80%) scale(.9); }
+}
+@keyframes fx-left {
+  from { opacity: 0; transform: translateX(-160%) rotate(-30deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fx-right {
+  from { opacity: 0; transform: translateX(160%) rotate(30deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fx-check {
+  from { opacity: 0; transform: scale(0) rotate(-90deg); }
+  to { opacity: 1; transform: none; }
 }
 
 /* ========== Resultado ========== */
