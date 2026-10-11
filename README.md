@@ -27,7 +27,7 @@ En ambos modos se elige el **tipo de memorama**:
 Niveles: **Fácil** (6 parejas), **Normal** (8) y **Difícil** (10). En cada partida las parejas se
 eligen al azar.
 
-La sección **Aprende** resume los temas del proyecto: las 4 libertades, la comparación libre vs.
+La sección **Aprende** empieza con un tutorial (*Cómo jugar*) para quien no conozca el juego y resume los temas del proyecto: las 4 libertades, la comparación libre vs.
 privativo, la historia de Tux y por qué el software libre ayuda a la escuela y al planeta.
 
 Los **récords** se guardan en el navegador de cada computadora, separados por tipo y nivel. Para empezar la feria con la

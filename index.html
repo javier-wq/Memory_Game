@@ -184,13 +184,60 @@
         <h2 id="aprende-titulo" tabindex="-1">💡 Aprende con Tux</h2>
 
         <div class="tabs" id="aprende-tabs" role="tablist" aria-label="Temas">
-          <button class="tab" type="button" role="tab" id="tab-a-1" aria-controls="panel-a-1" aria-selected="true">🗽 4 libertades</button>
+          <button class="tab" type="button" role="tab" id="tab-a-0" aria-controls="panel-a-0" aria-selected="true">🎓 Cómo jugar</button>
+          <button class="tab" type="button" role="tab" id="tab-a-1" aria-controls="panel-a-1" aria-selected="false" tabindex="-1">🗽 4 libertades</button>
           <button class="tab" type="button" role="tab" id="tab-a-2" aria-controls="panel-a-2" aria-selected="false" tabindex="-1">🔁 Libre vs. privativo</button>
           <button class="tab" type="button" role="tab" id="tab-a-3" aria-controls="panel-a-3" aria-selected="false" tabindex="-1">🐧 Tux</button>
           <button class="tab" type="button" role="tab" id="tab-a-4" aria-controls="panel-a-4" aria-selected="false" tabindex="-1">🌎 Escuela y planeta</button>
         </div>
 
-        <div class="tab-panel" id="panel-a-1" role="tabpanel" aria-labelledby="tab-a-1" tabindex="0">
+        <div class="tab-panel" id="panel-a-0" role="tabpanel" aria-labelledby="tab-a-0" tabindex="0">
+          <p class="lead">El memorama es un juego de <b>memoria</b>: todas las cartas empiezan boca abajo y hay que encontrar las parejas.</p>
+          <ol class="freedoms steps">
+            <li><span><b>Elige cómo jugar</b><span class="step-ico">🎮</span> <b class="inline">Jugar solo</b> o <span class="step-ico">⚔️</span> <b class="inline">Duelo</b> contra otra persona.</span></li>
+            <li><span><b>Elige el tipo y el nivel</b>Tipo de memorama y nivel: 🐣 Fácil, 🐧 Normal o 🚀 Difícil.</span></li>
+            <li><span><b>Voltea dos cartas</b>Toca una carta para verla y luego toca otra.</span></li>
+            <li><span><b>¿Son pareja?</b>Si lo son, se quedan boca arriba. Si no, se vuelven a voltear: ¡recuerda dónde estaban!</span></li>
+          </ol>
+
+          <h3 class="tuto-title">¿Qué cartas hacen pareja?</h3>
+          <ul class="compare tuto-types">
+            <li>
+              <span class="tuto-type">🔁 Libre vs. privativo</span>
+              <span class="compare-item priv"><img src="assets/logos/word.svg" alt="">Word</span>
+              <span class="compare-arrow">➜</span>
+              <span class="compare-item libre"><img src="assets/logos/writer.svg" alt="">Writer</span>
+              <span class="compare-cat">El programa 🔒 privativo con su alternativa 🔓 libre. Fíjate en la categoría escrita en la carta.</span>
+            </li>
+            <li>
+              <span class="tuto-type">🃏 Clásico</span>
+              <span class="compare-item priv"><img src="assets/logos/word.svg" alt="">Word</span>
+              <span class="compare-arrow">➜</span>
+              <span class="compare-item priv"><img src="assets/logos/word.svg" alt="">Word</span>
+              <span class="compare-cat">Dos cartas iguales, como el memorama de siempre.</span>
+            </li>
+          </ul>
+
+          <div class="why tuto-rules">
+            <article class="why-card">
+              <span class="why-ico">⭐</span>
+              <h3>Jugar solo</h3>
+              <p>Ganas puntos por cada pareja y más si aciertas seguido. Termina rápido y con pocos fallos para ganar 3 estrellas y entrar a los récords.</p>
+            </article>
+            <article class="why-card">
+              <span class="why-ico">⚔️</span>
+              <h3>Duelo</h3>
+              <p>Jugador 1 y Jugador 2 se turnan. Si aciertas, vuelves a tirar; si fallas, le toca al otro. Gana quien junte más parejas.</p>
+            </article>
+            <article class="why-card">
+              <span class="why-ico">🐧</span>
+              <h3>Tux te ayuda</h3>
+              <p>Mira lo que dice Tux mientras juegas: te da pistas y te cuenta datos curiosos de cada programa.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-a-1" role="tabpanel" aria-labelledby="tab-a-1" tabindex="0" hidden>
           <p class="lead">Un programa libre es como una <b>receta de cocina</b>: cualquiera puede usarla, leerla, compartirla y mejorarla.</p>
           <ol class="freedoms" id="libertades"></ol>
         </div>

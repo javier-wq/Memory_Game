@@ -579,6 +579,13 @@ legend { padding: 0; margin-bottom: 10px; font-size: 1.2rem; font-weight: 600; }
 .facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
 .facts li { padding: 10px 14px; border-radius: 16px; background: #fff; border: 3px solid var(--line); }
 
+.steps b.inline { display: inline; font-size: inherit; }
+.step-ico { font-size: 1.1em; }
+.tuto-title { margin-top: 22px; font-size: 1.3rem; }
+.tuto-types { margin-top: 10px; }
+.tuto-type { grid-column: 1 / -1; text-align: center; font-weight: 700; }
+.tuto-rules { margin-top: 16px; }
+
 .why { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .why-card { padding: 16px; text-align: center; border-radius: 22px; background: #fff; border: 3px solid var(--line); }
 .why-ico { font-size: 2.8rem; line-height: 1.1; }
